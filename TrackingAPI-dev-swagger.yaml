@@ -1,0 +1,153 @@
+---
+swagger: "2.0"
+info:
+  description: "Your first API with Amazon API Gateway. This is a sample API that\
+    \ integrates via HTTP with our demo Tracking API endpoints"
+  version: "2021-11-15T08:27:41Z"
+  title: "TrackingAPI"
+host: "4q0lg3h2rk.execute-api.us-east-1.amazonaws.com"
+basePath: "/dev"
+schemes:
+- "https"
+paths:
+  /:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "text/html"
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Content-Type:
+              type: "string"
+  /Event:
+    get:
+      produces:
+      - "application/json"
+      parameters:
+      - name: "type"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "page"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Pets"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+    post:
+      operationId: "CreatePet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "NewEvent"
+        required: true
+        schema:
+          $ref: "#/definitions/NewEvent"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/NewPetResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+  /Event/{eventId}:
+    get:
+      operationId: "GetPet"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Event"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+definitions:
+  Pets:
+    type: "array"
+    items:
+      $ref: "#/definitions/Event"
+  Empty:
+    type: "object"
+  Event:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      type:
+        type: "string"
+      price:
+        type: "number"
+  NewPetResponse:
+    type: "object"
+    properties:
+      Event:
+        $ref: "#/definitions/Event"
+      message:
+        type: "string"
+  NewEvent:
+    type: "string"
+    enum:
+    - "dog"
+    - "cat"
+    - "fish"
+    - "bird"
+    - "gecko"
